@@ -194,6 +194,12 @@ class CommonSteps {
     return browser.wait(ExpectedConditions.visibilityOf(allertSucces), 6000, 'OK button not loaded in time');
   }
 
+  @then(/^she can see success notification if not log error message "([^"]*)"$/)
+  public successNotificationIsPresentWithError(errorMessage: string): P<any> {
+    const allertSucces = this.world.app.getElementByClassName('alert-success');
+    return browser.wait(ExpectedConditions.visibilityOf(allertSucces), 6000, errorMessage);
+  }
+
   @when(/^she selects "([^"]*)" from "([^"]*)" dropdown$/)
   public async selectFromDropDown(option: string, selectId: string): P<any> {
     const selectSelector = `select[id="${selectId}"]`;
