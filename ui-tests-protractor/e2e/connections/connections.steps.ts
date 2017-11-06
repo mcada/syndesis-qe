@@ -17,14 +17,18 @@ import {log} from '../../src/app/logging';
 class ConnectionSteps {
 
   constructor(private world: World) {
+    this.cheese = Math.random().toString(24).slice(2);
   }
+
+  cheese;
 
   @then(/^Camilla is presented with "([^"]*)" connection details$/)
   public verifyConnectionDetails(connectionName: string, callback: CallbackStepDefinition): void {
     // Write code here that turns the phrase above into concrete actions
     const page = new ConnectionDetailPage();
+    
     expect(page.connectionName(), `Connection detail page must show connection name`)
-      .to.eventually.be.equal(connectionName).notify(callback);
+      .to.eventually.be.equal(connectionName + this.cheese).notify(callback);
     // todo add more assertion on connection details page
   }
 
@@ -58,18 +62,25 @@ class ConnectionSteps {
     return listComponent.deleteConnection(connectionName);
   }
 
-  @when(/^Camilla selects the "([^"]*)" connection.*$/)
+  @when(/^Camilla selects the "([^"]*)" connection$/)
   public selectConnection(connectionName: string): P<any> {
     // Write code here that turns the phrase above into concrete actions
     const listComponent = new ConnectionsListComponent();
     return listComponent.goToConnection(connectionName);
   }
 
+  @when(/^Camilla selects the "([^"]*)" connection with cheese.*$/)
+  public selectConnectionWitchCheese(connectionName: string): P<any> {
+    // Write code here that turns the phrase above into concrete actions
+    const listComponent = new ConnectionsListComponent();
+    return listComponent.goToConnection(connectionName + this.cheese);
+  }
+
   @when(/^type "([^"]*)" into connection name$/)
   public typeConnectionName(name: string): P<void> {
     // Write code here that turns the phrase above into concrete actions
     const connectionDetails = new ConnectionDetailsComponent();
-    return connectionDetails.name.set(name);
+    return connectionDetails.name.set(name + this.cheese);
   }
 
   @when(/^type "([^"]*)" into connection description/)

@@ -15,7 +15,7 @@ let cucumberHtmlPath = path.join(reportsPath, 'cucumber-report.html');
 
 let useBrowser = process.env.BROWSER || null;
 
-if (useBrowser === 'Firefox') {
+if (useBrowser === 'firefox') {
 
   console.log('Using Firefox browser.');
   config = { 
@@ -24,8 +24,21 @@ if (useBrowser === 'Firefox') {
     }
   };
   
-} else {
-  
+} else if (useBrowser === 'all') {
+  console.log('Using all possible browsers at the same time.');
+  config = {
+    multiCapabilities: [{
+      'browserName': 'firefox'
+    }, {
+      'browserName': 'chrome',
+      'chromeOptions': {
+        'args': ['--no-sandbox']
+      }
+    }],    
+  };
+  //or without if so chrome is default
+} else if (useBrowser === 'chrome'){  
+
   console.log('Using Chrome as default browser. Run \`export BROWSER=Firefox\` to use Firefox.');  
   config = { 
     capabilities: {
@@ -60,12 +73,13 @@ exports.config = merge(config, {
     // do stuff like set browser window size...
     // the set window size was moved to env.ts
     // because of browser restart afterFeature
-  },
-  useAllAngular2AppRoots: true,
-  beforeLaunch: function () {
     require('ts-node').register({
       project: 'e2e'
     });
+  },
+  useAllAngular2AppRoots: true,
+  beforeLaunch: function () {
+    
     // ensure we have empty directory to store cucumber reports
     fse.emptyDirSync(reportsPath);
   },

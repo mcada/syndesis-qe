@@ -23,5 +23,5 @@ Feature: Connections smoke test
     And click on the "Create" button
     Then Camilla is presented with the Syndesis page "Connections"
 
-    When Camilla selects the "my sample twitter connection" connection
+    When Camilla selects the "my sample twitter connection" connection with cheese
     Then Camilla is presented with "my sample twitter connection" connection details
