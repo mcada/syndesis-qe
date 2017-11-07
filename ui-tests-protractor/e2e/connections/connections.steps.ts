@@ -5,6 +5,8 @@ import { ConnectionDetailPage } from './detail/detail.po';
 import { ConnectionsListComponent } from './list/list.po';
 import { ConnectionCreatePage, ConnectionConfigurationComponent, ConnectionDetailsComponent } from './edit/edit.po';
 import {log} from '../../src/app/logging';
+import { ConnectionObjectElement } from './po/connection.po';
+import { element, by, ElementFinder, ExpectedConditions, browser } from 'protractor';
 
 // let http = require('http');
 
@@ -110,6 +112,25 @@ class ConnectionSteps {
     const connectionsListComp = new ConnectionsListComponent();
     return connectionsListComp.checkAllKebabElementsAreDisplayed(true, actions);
   }
-}
 
+  @when(/^clicks on the "([^"]*)" kebab menu button of "([^"]*)"$/)
+  async clickOnKebabMenuButton(button: string, connectionName: string): P<any> {
+    const conn = new ConnectionObjectElement()
+    return conn.clickKebabMenuButton(button, connectionName)
+  }
+
+
+
+  @then(/^she is presented with connection details page$/)
+  async connectionDetailPage(): P<any> {
+    return browser.wait(ExpectedConditions.visibilityOf
+      (element(by.xpath(`.//*[.="Connection Details"]`))), 6000,
+       'Page Connection Details is not visible')
+      
+  }
+
+
+
+
+}
 export = ConnectionSteps;
